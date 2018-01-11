@@ -1,0 +1,100 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Random Quote Generator</title>
+  <meta name="description" content="Quote Generator">
+  <meta name="author" content="Andrew Alvarez">
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- NORMALIZE
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+  <!-- <link rel="stylesheet" href="css/normalize.css"> -->
+
+  <!-- FONT
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link href="https://fonts.googleapis.com/css?family=Bitter|Open+Sans+Condensed:300|Oswald" rel="stylesheet">
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+  <link rel="stylesheet" href="css/style.css">
+
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <!-- <link rel="icon" type="image/png" href="images/favicon.png"> -->
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+</head>
+
+<body>
+
+  <main>
+    <div class="test-container">
+
+
+    <h1><a href="javascript:window.location.href=window.location.href">RANDOM QUOTE GENERATOR</a></h1>
+    <button id="quote-btn">NEW QUOTE!</button>
+    <div class="quote-container">
+      <p class="quote"><span class="quoteSign">" </span>Anyone who has ever made anything of importance was disciplined.<span class="quoteSign">"</span></p>
+      <p class="author">-Andrew Hendrixson</p>
+    </div>
+
+
+    </div>
+
+
+    <a id="tweetQuote" href="#"><img class="twitter" alt="Twitter Button" src="https://i.imgpile.com/nuiO4u.png" /></a>
+  </main>
+
+  <footer>
+    <p>2017  Andrew Alvarez  |  <a href="https://forismatic.com/en/" target="_blank">Forismatic</a></p>
+  </footer>
+</body>
+
+<!-- JavaScript
+–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+<script>
+
+  $(document).ready(() => {
+
+    $("#quote-btn").on("click",() => {
+
+      $.getJSON("https://api.forismatic.com/api/1.0/?method=getQuote&lang=en&jsonp=?&format=jsonp", (response) => {
+
+        if (response.quoteAuthor !== "") {
+
+          $(".quote-container").html(`<p class="quote"><span class="quoteSign">" </span>${response.quoteText.split('').slice(0, -1).join('')}<span class="quoteSign">"</span></p>
+          <p class="author">-${response.quoteAuthor}</p>`);
+            // console.log(response);
+
+            function setRandomQuote() {
+               currentQuote = `"${response.quoteText.split('').slice(0, -1).join('')}"  -${response.quoteAuthor}`;
+               $('#tweetQuote').attr('href', 'https://twitter.com/intent/tweet?text='+ currentQuote).attr('target', '_blank');
+             }
+             setRandomQuote();
+
+           } else {
+
+           $(".quote-container").html(`<p class="quote"><span class="quoteSign">" </span>${response.quoteText.split('').slice(0, -1).join('')}<span class="quoteSign">"</span></p>`);
+            //  console.log(response);
+             function setRandomQuote() {
+                currentQuote = `"${response.quoteText.split('').slice(0, -1).join('')}"`;
+                $('#tweetQuote').attr('href', 'https://twitter.com/intent/tweet?text='+ currentQuote).attr('target', '_blank');
+              }
+              setRandomQuote();
+           }
+        });
+
+    });
+
+  });
+
+</script>
+
+</html>
